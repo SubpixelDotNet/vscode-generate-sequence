@@ -1,62 +1,73 @@
-const vscode = require('vscode');
+const vscode = require('vscode')
 
-/**
- * @param {vscode.ExtensionContext} context
- */
+const opMap = {
+  '+': (a, b) => a + b,
+  '-': (a, b) => a - b,
+  '*': (a, b) => a * b,
+  '/': (a, b) => a / b,
+}
+
+async function generateSequence() {
+  if (!vscode.window.activeTextEditor) {
+    vscode.window.showInformationMessage('No active text editor')
+    return
+  }
+
+  const input = vscode.window.showInputBox({
+    value:       '0',
+    placeHolder: '0 + 1',
+    prompt:      '<start> <operation?> <step?>'
+  })
+
+  const userInputOptions = await input
+  if (!userInputOptions) {
+    vscode.window.showInformationMessage('No input provided')
+    return
+  }
+
+  const options = userInputOptions.split(' ').filter(token => !!token)
+
+  let nextInSequence = options[0] ? parseInt(options[0]) : 0
+  let op = opMap['+']
+  let step = 1
+
+  if (options.length > 1) {
+    if (Object.hasOwn(opMap, options[1])) {
+      op = opMap[options[1]]
+    } else {
+      // If the second token is not an operation (+, -, /, *), then assume
+      // the user skipped that, and it is the step value instead.
+      step = parseInt(options[1])
+    }
+  }
+
+  if (options.length > 2) {
+    step = parseInt(options[2])
+  }
+
+  vscode.window.activeTextEditor.edit((editBuilder) => {
+    // Order selection by line number, so that sequences always start from the top of the file
+    // and continue down the file.
+    const orderedSelections = [...vscode.window.activeTextEditor.selections].sort((a, b) => {
+      return a.anchor.line - b.anchor.line
+    })
+
+    for (const selection of orderedSelections) {
+      editBuilder.replace(selection, nextInSequence.toString())
+      nextInSequence = op(nextInSequence, step)
+    }
+  })
+}
+
 function activate(context) {
-	context.subscriptions.push(vscode.commands.registerCommand('vs-sequential-number.generate', sequentialNumberGenerate));
-}
-exports.activate = activate;
-
-function sequentialNumberGenerate() {
-	if (vscode.window.activeTextEditor) {
-
-		let input = vscode.window.showInputBox({
-			'value': '1',
-			'placeHolder': '1 + 1',
-			'prompt' : '<start> <operator?> <step?>'
-		});
-
-		input.then((value) => {
-			if (value) {
-				let options = [];
-
-				value.split(' ').forEach((element) => {
-					if (element) {
-						options.push(element);
-					}
-				});
-
-				let start = options[0] ? options[0] : '1';
-				let operator = '+';
-				let step = '1';
-
-				if (options[1]) {
-					if (['+', '-', '*', '/'].includes(options[1])) {
-						operator = options[1];
-						step = options[2] ? options[2] : '1';
-					} else {
-						step = options[1];
-					}
-				}
-
-				let result = start;
-
-				vscode.window.activeTextEditor.edit((editBuilder) => {
-					vscode.window.activeTextEditor.selections.forEach((element, index) => {
-						if (index != 0) {
-							result = eval(parseInt(result) + operator + parseInt(step));
-						}
-
-						editBuilder.replace(element, result.toString());
-					});
-				});
-			}
-		});
-	}
+  context.subscriptions.push(
+    vscode.commands.registerCommand('generate-sequence.generate', generateSequence)
+  )
 }
 
-function deactivate() {}
+function deactivate() {
+  // nop
+}
 
 module.exports = {
 	activate,

@@ -1,17 +1,17 @@
 {
-	"name": "vs-sequential-number",
-	"displayName": "VS Sequential Number",
-	"description": "Input sequential number in the across multiple cursors.",
-	"version": "1.1.0",
-	"publisher": "neptunedesign",
+	"name": "generate-sequence",
+	"displayName": "Generate Sequence",
+	"description": "Generates numbers sequentially at each cursor position.",
+	"version": "0.0.1",
+	"publisher": "Jimmie Tyrrell",
 	"author": {
-		"name": "Fortez Fabrice",
-		"email": "contact@neptune-design.fr",
-		"url": "https://neptune-design.fr"
+		"name": "Jimmie Tyrrell",
+		"email": "jimmie@subpixel.net",
+		"url": "https://www.subpixel.net"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/neptunedesign/vs-sequential-number"
+		"url": "https://github.com/j1mmie/vscode-generate-sequence"
 	},
 	"engines": {
 		"vscode": "^1.32.0"
@@ -32,15 +32,12 @@
 		"color": "#423B55",
 		"theme": "dark"
 	},
-	"activationEvents": [
-		"onCommand:vs-sequential-number.generate"
-	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vs-sequential-number.generate",
-				"title": "Sequential Number"
+				"command": "generate-sequence.generate",
+				"title": "Generate Sequence"
 			}
 		]
 	},

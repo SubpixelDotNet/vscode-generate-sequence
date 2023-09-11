@@ -1,33 +1,26 @@
-# [VS Sequential Number](https://marketplace.visualstudio.com/items?itemName=neptunedesign.vs-sequential-number)
+# Generate Sequence
 
-An Visual Studio Code package, to inputs sequential numbers across multiple cursors.
+(Forked from https://github.com/NeptuneDesign/vs-sequential-number)
 
-## Screenshot
+Generate numbers sequentially at each cursor position.  Also supports using different operations (+, -, *, and /), and an optional step value.
 
-![Demo](https://raw.githubusercontent.com/NeptuneDesign/vs-sequential-number/master/images/screenshot.gif)
+Differences from vs-sequential-number:
+
+1. Works from top to bottom of the file, ignores which order your cursors were placed (may not be ideal for some folks)
+2. Base-zero by default
+
+## Usage
+
+Load the Command Palette (Cmd+Shift+P) and look for `Generate Sequence`
 
 ## Syntax Rules
 
 ```
-<start> <operator?> <step?>
+<start> <operation?> <step?>
 ```
 
-| Key                                   | Default | Definition                                                                            |
-| :------------------------------------ | :------ | :------------------------------------------------------------------------------------ |
-| **start**                             | `1`     | It specifies the number that you start typing an integer.                             |
-| **operator** (optinal)                | `+`     | It specifies the generation rules of consecutive numbers in the `+`, `-`, `*` or `/`. |
-| **step** (optinal)                    | `1`     | It specifies the integer to be added or subtracted.                                   |
-
-## Release Notes
-
-## 1.1.0
-
-- Add operator '*', '/', Thanks to SangheonYi
-
-### 1.0.0
-
-- Update of security dependencies
-
-### 0.0.1
-
-- Initial release
+| Option                   | Default | Definition                                                                           |
+| :------------------------| :------ | :----------------------------------------------------------------------------------- |
+| **start**                | `0`     | The first number in the sequence                                                     |
+| **operation** (optional) | `+`     | An operation to apply for each iteration (+, -, *, or /)                             |
+| **step** (optional)      | `1`     | A number to add, subtract, multiply, or divide with the previously generated number  |
