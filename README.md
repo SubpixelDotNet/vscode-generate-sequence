@@ -9,6 +9,9 @@ Differences from vs-sequential-number:
 1. Works from top to bottom of the file, ignores which order your cursors were placed (may not be ideal for some folks)
 2. Base-zero by default
 
+![](images/demo.gif)
+
+
 ## Usage
 
 Load the Command Palette (Cmd+Shift+P) and look for `Generate Sequence`
